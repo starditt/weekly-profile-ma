@@ -2,29 +2,29 @@
 // ©radityastarditt
  
 //@version=5
-indicator("My Weekly Profile", overlay=true, max_lines_count=500, max_labels_count=5, max_boxes_count=500)
+indicator("MA Weekly Profile", overlay=true, max_lines_count=500, max_labels_count=5, max_boxes_count=500)
 
 // General Settings Inputs
 TZI                     = input.string          (defval="UTC -5", title="Timezone Selection", options=["UTC -10", "UTC -7", "UTC -6", "UTC -5", "UTC -4", "UTC -3", "UTC +0", "UTC +1", "UTC +2", "UTC +3", "UTC +3:30", "UTC +4", "UTC +5", "UTC +5:30", "UTC +6", "UTC +7", "UTC +8", "UTC +9", "UTC +9:30", "UTC +10", "UTC +10:30", "UTC +11", "UTC +13", "UTC +13:45"], tooltip="Select the Timezone. ( Shifts Chart Elements )", group="Global Settings")
 Timezone                = TZI                   == "UTC -10" ? "GMT-10:00" : TZI == "UTC -7" ? "GMT-07:00" : TZI == "UTC -6" ? "GMT-06:00" : TZI == "UTC -5" ? "GMT-05:00" : TZI == "UTC -4" ? "GMT-04:00" : TZI == "UTC -3" ? "GMT-03:00" : TZI == "UTC +0" ? "GMT+00:00" : TZI == "UTC +1" ? "GMT+01:00" : TZI == "UTC +2" ? "GMT+02:00" : TZI == "UTC +3" ? "GMT+03:00" : TZI == "UTC +3:30" ? "GMT+03:30" : TZI == "UTC +4" ? "GMT+04:00" : TZI == "UTC +5" ? "GMT+05:00" : TZI == "UTC +5:30" ? "GMT+05:30" : TZI == "UTC +6" ? "GMT+06:00" : TZI == "UTC +7" ? "GMT+07:00" : TZI == "UTC +8" ? "GMT+08:00" : TZI == "UTC +9" ? "GMT+09:00" : TZI == "UTC +9:30" ? "GMT+09:30" : TZI == "UTC +10" ? "GMT+10:00" : TZI == "UTC +10:30" ? "GMT+10:30" : TZI == "UTC +11" ? "GMT+11:00" : TZI == "UTC +13" ? "GMT+13:00" : "GMT+13:45"
-inputMaxInterval        = input.int             (31, title="Hide Indicator Above Specified Minutes", tooltip="Above 30Min, Chart Will Become Messy & Unreadable", group="Global Settings")
+inputMaxInterval        = input.int             (10000, title="Hide Indicator Above Specified Minutes", tooltip="Above 30Min, Chart Will Become Messy & Unreadable", group="Global Settings")
 // Session options
-ShowTSO                 = input.bool            (true, title="Show Today's Session Only", group="Session Options", tooltip="Hide Historical Sessions")
-ShowTWO                 = input.bool            (true, title="Show Current Week's Sessions Only", group="Session Options", tooltip="Show All Sessions from the current week")
-SL4W                    = input.bool            (true, title="Show Last 4 Week Sessions", group="Session Options", tooltip="Show All Sessions from Last Four Weeks \nShould Disable Current Week Session to Work")
+ShowTSO                 = input.bool            (false, title="Show Today's Session Only", group="Session Options", tooltip="Hide Historical Sessions")
+ShowTWO                 = input.bool            (false, title="Show Current Week's Sessions Only", group="Session Options", tooltip="Show All Sessions from the current week")
+SL4W                    = input.bool            (false, title="Show Last 4 Week Sessions", group="Session Options", tooltip="Show All Sessions from Last Four Weeks \nShould Disable Current Week Session to Work")
 ShowSFill               = input.bool            (false, title="Show Session Highlighting", group="Session Options", tooltip="Highlights Session from Top of the Chart to Bottom")
 //----------------------------------------------
 // Historical Lines
-ShowMOPL                = input.bool            (title="Midnight Historical Price Lines", defval=false, group="Historical Lines", tooltip="Shows Historical Midnight Price Lines")
+ShowMOPL                = input.bool            (title="Midnight Historical Price Lines", defval=true, group="Historical Lines", tooltip="Shows Historical Midnight Price Lines")
 MOLHist                 = input.bool            (title="Midnight Historical Vertical Lines", defval=true, group="Historical Lines", tooltip="Shows Historical Midnight Vertical Lines")
-ShowPrev                = input.bool            (false, title="Misc. Historical Price Lines", group="Historical Lines", tooltip="Makes Chart Cluttered, Use For Backtesting Only")
+ShowPrev                = input.bool            (true, title="Misc. Historical Price Lines", group="Historical Lines", tooltip="Makes Chart Cluttered, Use For Backtesting Only")
 //----------------------------------------------
 
 // Session Bool
-ShowLondon              = input.bool            (true, "", inline="LONDON", group="Sessions", tooltip="01:00 to 05:00")
-ShowNY                  = input.bool            (true, "", inline="NY", group="Sessions", tooltip="07:00 to 10:00")
-ShowLC                  = input.bool            (true, "", inline="LC", group="Sessions", tooltip="10:00 to 12:00")
-ShowPM                  = input.bool            (true, "",inline="PM", group="Sessions", tooltip="13:00 to 16:00")
+ShowLondon              = input.bool            (false, "", inline="LONDON", group="Sessions", tooltip="01:00 to 05:00")
+ShowNY                  = input.bool            (false, "", inline="NY", group="Sessions", tooltip="07:00 to 10:00")
+ShowLC                  = input.bool            (false, "", inline="LC", group="Sessions", tooltip="10:00 to 12:00")
+ShowPM                  = input.bool            (false, "",inline="PM", group="Sessions", tooltip="13:00 to 16:00")
 ShowAsian               = input.bool            (false, "",inline="ASIA2", group="Sessions", tooltip="20:00 to 00:00")
 ShowFreeSesh            = input.bool            (false, "",inline="FREE", group="Sessions", tooltip="Custom Session")
 
@@ -60,7 +60,7 @@ ShowMOP                 = input.bool            (title="", defval=true, inline="
 txt12                   = input.string          ("MIDNIGHT", title="", inline="MOP", group="Vertical Lines")
 ShowLOP                 = input.bool            (title="", defval=false, inline="LOP", group="Vertical Lines", tooltip="03:00 AM")
 txt14                   = input.string          ("LONDON", title="", inline="LOP", group="Vertical Lines")
-ShowNYOP                = input.bool            (title="", defval=true, inline="NYOP", group="Vertical Lines", tooltip="08:30 AM")
+ShowNYOP                = input.bool            (title="", defval=false, inline="NYOP", group="Vertical Lines", tooltip="08:30 AM")
 txt15                   = input.string          ("NEW YORK", title="", inline="NYOP", group="Vertical Lines")
 ShowEOP                 = input.bool            (title="", defval=false, inline="EOP", group="Vertical Lines", tooltip="09:30 AM")
 txt16                   = input.string          ("EQUITIES", title="", inline="EOP", group="Vertical Lines")
@@ -115,8 +115,8 @@ i_AFTOPLW               = input.string          ("1px", "", options=["1px","2px"
 //----------------------------------------------
 
 // W&M Bool
-ShowWeekOpen            = input.bool            (defval=false, title="", tooltip="Draw Weekly Open Price Line", group="HTF Opening Price Lines", inline="WO")
-showMonthOpen           = input.bool            (defval=false, title="", tooltip="Draw Monthly Open Price Line", group="HTF Opening Price Lines", inline="MO")
+ShowWeekOpen            = input.bool            (defval=true, title="", tooltip="Draw Weekly Open Price Line", group="HTF Opening Price Lines", inline="WO")
+showMonthOpen           = input.bool            (defval=true, title="", tooltip="Draw Monthly Open Price Line", group="HTF Opening Price Lines", inline="MO")
 
 // W&M String
 txt19                   = input.string          ("WEEKLY", title="", inline="WO", group="HTF Opening Price Lines")
@@ -136,8 +136,8 @@ i_MONPLW                = input.string          ("1px", "", options=["1px","2px"
 //----------------------------------------------
 
 // CBDR, ASIA & FLOUT
-ShowCBDR                = input.bool            (true, "", inline='CBDR', group="CBDR, ASIA & FLOUT")
-ShowASIA                = input.bool            (true, "", inline='ASIA', group="CBDR, ASIA & FLOUT")
+ShowCBDR                = input.bool            (false, "", inline='CBDR', group="CBDR, ASIA & FLOUT")
+ShowASIA                = input.bool            (false, "", inline='ASIA', group="CBDR, ASIA & FLOUT")
 ShowFLOUT               = input.bool            (false, "", inline='FLOUT', group="CBDR, ASIA & FLOUT")
 
 // Strings
@@ -234,17 +234,17 @@ txt52                   = input.string          ("DXY ", title="", inline="BIAS1
 BIASOption1             = input.string          ("Bullish", options=["Bullish", "Bearish", "Consolidating", "Unclear"], title="", inline="BIAS1", group="BIAS & NOTES")
 
 BIASbool2               = input.bool            (true, '', inline="BIAS2", group="BIAS & NOTES")
-txt53                   = input.string          ("EURGBP ", title="", inline="BIAS2", group="BIAS & NOTES")
-BIASOption2             = input.string          ("Bearish", options=["Bullish", "Bearish", "Consolidating", "Unclear"], title="", inline="BIAS2", group="BIAS & NOTES")
+txt53                   = input.string          ("JPY ", title="", inline="BIAS2", group="BIAS & NOTES")
+BIASOption2             = input.string          ("Bullish", options=["Bullish", "Bearish", "Consolidating", "Unclear"], title="", inline="BIAS2", group="BIAS & NOTES")
 
 BIASbool3               = input.bool            (true, '', inline="BIAS3", group="BIAS & NOTES")
-txt54                   = input.string          ("AUDNZD ", title="", inline="BIAS3", group="BIAS & NOTES")
+txt54                   = input.string          ("CAD ", title="", inline="BIAS3", group="BIAS & NOTES")
 BIASOption3             = input.string          ("Bullish", options=["Bullish", "Bearish", "Consolidating", "Unclear"], title="", inline="BIAS3", group="BIAS & NOTES")
 
 BIASbool4               = input.bool            (true, '', inline="BIAS4", group="BIAS & NOTES")
-txt55                   = input.string          ("NASDAQ ", title="", inline="BIAS4", group="BIAS & NOTES")
-BIASOption4             = input.string          ("Bearish", options=["Bullish", "Bearish", "Consolidating", "Unclear"], title="", inline="BIAS4", group="BIAS & NOTES")
-notes                   = input.text_area       ("@coldbrewrosh", "Notes", group = "BIAS & NOTES")
+txt55                   = input.string          ("CHF ", title="", inline="BIAS4", group="BIAS & NOTES")
+BIASOption4             = input.string          ("Bullish", options=["Bullish", "Bearish", "Consolidating", "Unclear"], title="", inline="BIAS4", group="BIAS & NOTES")
+notes                   = input.text_area       ("", "Notes", group = "BIAS & NOTES")
 
 
 
@@ -1373,7 +1373,7 @@ if ShowTWO
     Cleanup(daycount)
 
 // ------------------------------------------------------------
-// --------------------- MA RIBBON ADD-ON ----------------------
+// --------------------- MA RIBBON ----------------------------
 // ------------------------------------------------------------
 
 // ==== MA Function ====
@@ -1394,26 +1394,26 @@ show_MA_Ribbon = input.bool(true, "Show MA Ribbon", group = groupMA)
 // ==== MA 1 ====
 show_ma1   = input.bool(true,  "MA #1", inline = "MA1", group = groupMA)
 ma1_type   = input.string("SMA", "",   inline = "MA1", group = groupMA, options = ["SMA","EMA","SMMA (RMA)","WMA","VWMA"])
-ma1_len    = input.int(20,      "",    inline = "MA1", group = groupMA, minval = 1)
-ma1_color  = input.color(#f6c309, "",  inline = "MA1", group = groupMA)
+ma1_len    = input.int(8,      "",    inline = "MA1", group = groupMA, minval = 1)
+ma1_color  = input.color(#b380ff, "",  inline = "MA1", group = groupMA)
 
 // ==== MA 2 ====
 show_ma2   = input.bool(true,  "MA #2", inline = "MA2", group = groupMA)
 ma2_type   = input.string("SMA", "",   inline = "MA2", group = groupMA, options = ["SMA","EMA","SMMA (RMA)","WMA","VWMA"])
-ma2_len    = input.int(50,      "",    inline = "MA2", group = groupMA, minval = 1)
-ma2_color  = input.color(#fb9800, "",  inline = "MA2", group = groupMA)
+ma2_len    = input.int(21,      "",    inline = "MA2", group = groupMA, minval = 1)
+ma2_color  = input.color(#a366ff, "",  inline = "MA2", group = groupMA)
 
 // ==== MA 3 ====
-show_ma3   = input.bool(true,  "MA #3", inline = "MA3", group = groupMA)
+show_ma3   = input.bool(false,  "MA #3", inline = "MA3", group = groupMA)
 ma3_type   = input.string("SMA", "",   inline = "MA3", group = groupMA, options = ["SMA","EMA","SMMA (RMA)","WMA","VWMA"])
-ma3_len    = input.int(100,     "",    inline = "MA3", group = groupMA, minval = 1)
-ma3_color  = input.color(#fb6500, "",  inline = "MA3", group = groupMA)
+ma3_len    = input.int(34,     "",    inline = "MA3", group = groupMA, minval = 1)
+ma3_color  = input.color(#6600ff, "",  inline = "MA3", group = groupMA)
 
 // ==== MA 4 ====
 show_ma4   = input.bool(true,  "MA #4", inline = "MA4", group = groupMA)
 ma4_type   = input.string("SMA", "",   inline = "MA4", group = groupMA, options = ["SMA","EMA","SMMA (RMA)","WMA","VWMA"])
-ma4_len    = input.int(200,     "",    inline = "MA4", group = groupMA, minval = 1)
-ma4_color  = input.color(#f60c0c, "",  inline = "MA4", group = groupMA)
+ma4_len    = input.int(100,     "",    inline = "MA4", group = groupMA, minval = 1)
+ma4_color  = input.color(#0000ff, "",  inline = "MA4", group = groupMA)
 
 // ==== MA Values ====
 ma1 = show_MA_Ribbon and show_ma1 ? ma_func(close, ma1_len, ma1_type) : na
@@ -1426,7 +1426,3 @@ plot(ma1, "MA #1", color = ma1_color)
 plot(ma2, "MA #2", color = ma2_color)
 plot(ma3, "MA #3", color = ma3_color)
 plot(ma4, "MA #4", color = ma4_color)
-
-// ------------------------------------------------------------
-// ------------------ END MA RIBBON ADD-ON ---------------------
-// ------------------------------------------------------------
